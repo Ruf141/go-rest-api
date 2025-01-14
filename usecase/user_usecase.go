@@ -16,22 +16,22 @@ type userUsecase struct {
 	ur repository.IUserRepository
 }
 
-func NewUserUsecase(ur repository.IUserRepository) IUserUseCase{
+func NewUserUsecase(ur repository.IUserRepository) IUserUseCase {
 	return &userUsecase{ur}
 }
 
-func (uu *userUsecase) SignUp(user model.User)(model.UserResponse.userUsecas,error){
-	hash, err := bcrypt.GenerateFromPassword([]byte(user.Password),10)
+func (uu *userUsecase) SignUp(user model.User) (model.UserResponse, error) {
+	hash, err := bcrypt.GenerateFromPassword([]byte(user.Password), 10)
 	if err != nil {
 		return model.UserResponse{}, err
 	}
 	newUser := model.User{Email: user.Email, Password: string(hash)}
-	if err := uu.ur.CreateUser(&newUser); err!=nil{
-		return model.UserResponse{},err
+	if err := uu.ur.CreateUser(&newUser); err != nil {
+		return model.UserResponse{}, err
 	}
 	resUser := model.UserResponse{
-		ID: newUser.ID,
-		Email : newUser.Email,
+		ID:    newUser.ID,
+		Email: newUser.Email,
 	}
 	return resUser, nil
 }
