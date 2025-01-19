@@ -50,7 +50,9 @@ func (uu *userUsecase) Login(user model.User) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	token := jwt.NewWithClaims(jwt.SigningMethodES256, jwt.MapClaims{
+
+	// JWTトークンを生成
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"user_id": storedUser.ID,
 		"exp":     time.Now().Add(time.Hour * 12).Unix(),
 	})
