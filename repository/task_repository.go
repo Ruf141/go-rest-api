@@ -28,3 +28,16 @@ func (tr *taskRepository) GetAllTasks(tasks *[]model.Task, userId uint) error {
 	}
 	return nil
 }
+
+func (tu *taskUsecase) CreateTask(task model.Task) (mode.TaskResponse, error) {
+	if err := tu.tr.CreateTask(&task); err != nil {
+		return model.TaskResponse{}, err
+	}
+	resTask := model.TaskResponse{
+		ID:        task.ID,
+		Title:     task.Title,
+		CreatedAt: task.CreatedAt,
+		UpdatedAt: task.UpdatedAt,
+	}
+	return resTask, nil
+}
