@@ -29,35 +29,15 @@ func (tr *taskRepository) GetAllTasks(tasks *[]model.Task, userId uint) error {
 	return nil
 }
 
-func (tu *taskUsecase) GetTaskById(userId uint, taskId uint) (model.TaskResponse, error) {
-	task := model.Task{}
-	if err := tu.tr.GetTaskById(&task, userId, taskId); err != nil {
-		return model.TaskResponse{}, err
+func (tr *taskRepository) GetTaskById(task *model.Task, userId uint, taskId uint) error {
+	if err := tr.db.Joins("User").Where("user_id=?", userId).First(task, taskId).Error; err != nil {
+		return err
 	}
-	resTask := model.TaskResponse{
-		ID:        taskId,
-		Title:     task.Title,
-		CreatedAt: task.CreatedAt,
-		UpdatedAt: task.UpdatedAt,
-	}
-	return resTask, nil
+	return nil
 }
 
-func (tu *taskUsecase) CreateTask(task model.Task) (mode.TaskResponse, error) {
-	if err := tu.tr.CreateTask(&task); err != nil {
-		return model.TaskResponse{}, err
-	}
-	resTask := model.TaskResponse{
-		ID:        task.ID,
-		Title:     task.Title,
-		CreatedAt: task.CreatedAt,
-		UpdatedAt: task.UpdatedAt,
-	}
-	return resTask, nil
-}
-
-func (tu *taskUsecase) DeliteTask(userId uint, taskId uint) error {
-	if err := tu.tr.DeliteTask(userId, taskId); err != nil {
+func (tr *taskRepository) CreateTask(task *model.Task) error {
+	if err := tr.db.Create(task).Error; err != nil {
 		return err
 	}
 	return nil
