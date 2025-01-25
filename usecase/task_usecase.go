@@ -1,3 +1,15 @@
+package usecase
+
+import "go-rest-api/model"
+
+type ITaskUsecase interface {
+	GetAllTasks(userId uint) ([]model.TaskResponse, error)
+	GetTaskById(userId uint, taskId uint) ([]model.TaskResponse, error)
+	CreateTask(task model.Task) (model.TaskResponse, error)
+	UpdateTask(task model.Task, userId uint, taskId uint) model.TaskResponse
+	DeleteTask(userId int, taskId uint) error
+}
+
 func (tu *taskUsecase) GetTaskById(userId uint, taskId uint) (model.TaskResponse, error) {
 	task := model.Task{}
 	if err := tu.tr.GetTaskById(&task, userId, taskId); err != nil {
@@ -26,7 +38,7 @@ func (tu *taskUsecase) CreateTask(task model.Task) (mode.TaskResponse, error) {
 }
 
 func (tu *taskUsecase) DeleteTask(userId uint, taskId uint) error {
-	if err := tu.tr.DeliteTask(userId, taskId); err != nil {
+	if err := tu.tr.DeleteTask(userId, taskId); err != nil {
 		return err
 	}
 	return nil

@@ -13,7 +13,7 @@ type ITaskRepository interface {
 	GetTaskById(task *model.Task, userId uint, taskId uint) error
 	CreateTask(task *model.Task) error
 	UpdateTask(task *model.Task, userId uint, taskId uint) error
-	DeliteTask(userId uint, taskId uint) error
+	DeleteTask(userId uint, taskId uint) error
 }
 
 type taskRepository struct {
