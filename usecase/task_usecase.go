@@ -25,7 +25,7 @@ func (tu *taskUsecase) CreateTask(task model.Task) (mode.TaskResponse, error) {
 	return resTask, nil
 }
 
-func (tu *taskUsecase) DeliteTask(userId uint, taskId uint) error {
+func (tu *taskUsecase) DeleteTask(userId uint, taskId uint) error {
 	if err := tu.tr.DeliteTask(userId, taskId); err != nil {
 		return err
 	}
