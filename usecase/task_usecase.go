@@ -1,6 +1,9 @@
 package usecase
 
-import "go-rest-api/model"
+import (
+	"go-rest-api/model"
+	"go-rest-api/repository"
+)
 
 type ITaskUsecase interface {
 	GetAllTasks(userId uint) ([]model.TaskResponse, error)
@@ -8,6 +11,14 @@ type ITaskUsecase interface {
 	CreateTask(task model.Task) (model.TaskResponse, error)
 	UpdateTask(task model.Task, userId uint, taskId uint) model.TaskResponse
 	DeleteTask(userId int, taskId uint) error
+}
+
+type taskUsecase struct {
+    tr repository.ITaskRepository
+}
+
+func NewTaskUsecase(tr repository.ITaskRepository)ITaskUsecase{
+    return &taskUsecase{tr}
 }
 
 func (tu *taskUsecase) GetTaskById(userId uint, taskId uint) (model.TaskResponse, error) {
