@@ -3,14 +3,16 @@ package usecase
 import (
 	"go-rest-api/model"
 	"go-rest-api/repository"
+
+	"github.com/golang-jwt/jwt/v4"
 )
 
 type ITaskUsecase interface {
 	GetAllTasks(userId uint) ([]model.TaskResponse, error)
 	GetTaskById(userId uint, taskId uint) ([]model.TaskResponse, error)
 	CreateTask(task model.Task) (model.TaskResponse, error)
-	UpdateTask(task model.Task, userId uint, taskId uint) model.TaskResponse
-	DeleteTask(userId int, taskId uint) error
+	UpdateTask(task model.Task, userId uint, taskId uint) (model.TaskResponse, error)
+	DeleteTask(userId uint, taskId uint) error
 }
 
 type taskUsecase struct {
