@@ -17,6 +17,10 @@ type taskUsecase struct {
 	tr repository.ITaskRepository
 }
 
+func NewTaskUsecase(tr repository.ITaskRepository) ITaskUsecase {
+	return &taskUsecase{tr}
+}
+
 func (tu *taskUsecase) GetAllTasks(userId uint) ([]model.TaskResponse, error) {
 	tasks := []model.Task{}
 	if err := tu.tr.GetAllTasks(&tasks, userId); err != nil {
@@ -35,8 +39,17 @@ func (tu *taskUsecase) GetAllTasks(userId uint) ([]model.TaskResponse, error) {
 	return resTask, nil
 }
 
-func NewTaskUsecase(tr repository.ITaskRepository) ITaskUsecase {
-	return &taskUsecase{tr}
+func (tu *taskUsecase) CreateTask(task model.Task) (model.TaskResponse, error) {
+	if err := tu.tr.CreateTask(&task); err != nil {
+		return model.TaskResponse{}, err
+	}
+	resTask := model.TaskResponse{
+		ID:        task.ID,
+		Title:     task.Title,
+		CreatedAt: task.CreatedAt,
+		UpdatedAt: task.UpdatedAt,
+	}
+	return resTask, nil
 }
 
 func (tu *taskUsecase) GetTaskById(userId uint, taskId uint) (model.TaskResponse, error) {
@@ -55,19 +68,6 @@ func (tu *taskUsecase) GetTaskById(userId uint, taskId uint) (model.TaskResponse
 
 func (tu *taskUsecase) UpdateTask(task model.Task, userId uint, taskId uint) (model.TaskResponse, error) {
 	if err := tu.tr.UpdateTask(&task, userId, taskId); err != nil {
-		return model.TaskResponse{}, err
-	}
-	resTask := model.TaskResponse{
-		ID:        task.ID,
-		Title:     task.Title,
-		CreatedAt: task.CreatedAt,
-		UpdatedAt: task.UpdatedAt,
-	}
-	return resTask, nil
-}
-
-func (tu *taskUsecase) CreateTask(task model.Task) (mode.TaskResponse, error) {
-	if err := tu.tr.CreateTask(&task); err != nil {
 		return model.TaskResponse{}, err
 	}
 	resTask := model.TaskResponse{
