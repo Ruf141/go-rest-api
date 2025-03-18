@@ -27,7 +27,7 @@ func NewTaskController(tu usecase.ITaskUsecase) ItaskController {
 }
 
 func (tc *taskController) GetAllTasks(c echo.Context) error {
-	user := c.Get("user").(jwt.Token)
+	user := c.Get("user").(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)
 	userId := claims["user_id"]
 
@@ -39,7 +39,7 @@ func (tc *taskController) GetAllTasks(c echo.Context) error {
 }
 
 func (tc *taskController) GetTaskById(c echo.Context) error {
-	user := c.Get("user").(jwt.Token)
+	user := c.Get("user").(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)
 	userId := claims["user_id"]
 
@@ -53,7 +53,7 @@ func (tc *taskController) GetTaskById(c echo.Context) error {
 }
 
 func (tc *taskController) CreateTask(c echo.Context) error {
-	user := c.Get("user").(jwt.Token)
+	user := c.Get("user").(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)
 	userId := claims["user_id"]
 
