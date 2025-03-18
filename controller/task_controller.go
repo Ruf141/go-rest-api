@@ -22,7 +22,7 @@ type taskController struct {
 	tu usecase.ITaskUsecase
 }
 
-func NewTaskController(tu usecase.ITaskUsecase) usecase.ITaskUsecase {
+func NewTaskController(tu usecase.ITaskUsecase) ItaskController {
 	return &taskController{tu}
 }
 
