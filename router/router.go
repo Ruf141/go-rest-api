@@ -21,16 +21,17 @@ func NewRouter(uc controller.IUserController, tc controller.ItaskController) *ec
 		AllowCredentials: true,
 	}))
 	e.Use(middleware.CSRFWithConfig(middleware.CSRFConfig{
-		CookiePath: "/",
-		CookieDomain: os.Getenv("API_DOMAIN"),
+		CookiePath:     "/",
+		CookieDomain:   os.Getenv("API_DOMAIN"),
 		CookieHTTPOnly: true,
-		// CookieSameSite: http.SameSiteNoneMode,
-		CookieSameSite: http.SameSiteDefaultMode,
+		CookieSameSite: http.SameSiteNoneMode,
+		// CookieSameSite: http.SameSiteDefaultMode,
 		// CookieMaxAge: 60,
 	}))
 	e.POST("/signup", uc.SignUp)
 	e.POST("/login", uc.Login)
 	e.POST("/logout", uc.LogOut)
+	e.GET("/csrf", uc.CsrfToken)
 	t := e.Group("/tasks")
 	t.Use(echojwt.WithConfig(echojwt.Config{
 		SigningKey:  []byte(os.Getenv("SECRET")),
